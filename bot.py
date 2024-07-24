@@ -1,5 +1,7 @@
 import discord
 from discord.ext import commands
+import json
+import os
 
 # Your bot token
 TOKEN = 'YOUR_BOT_TOKEN_HERE'
@@ -13,24 +15,38 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 # Dictionary to store user preferences
 user_preferences = {}
 
+# Load user preferences from a JSON file
+def load_preferences():
+    global user_preferences
+    if os.path.exists('user_preferences.json'):
+        with open('user_preferences.json', 'r') as f:
+            user_preferences = json.load(f)
+
+# Save user preferences to a JSON file
+def save_preferences():
+    with open('user_preferences.json', 'w') as f:
+        json.dump(user_preferences, f, indent=4)
+
 @bot.event
 async def on_ready():
+    load_preferences()
     print(f'Logged in as {bot.user.name} (ID: {bot.user.id})')
     print('------')
     # Set custom status
-    activity = discord.Game(name="!help for commands")
+    activity = discord.Game(name="!adsbx-help for commands")
     await bot.change_presence(status=discord.Status.online, activity=activity)
 
-@bot.command(name='notify', help='Set the channel and keywords to monitor. Usage: !notify #channel-name keyword1 keyword2 ...')
+@bot.command(name='adsbx-notify', help='Set the channel and keywords to monitor. Usage: !adsbx-notify #channel-name keyword1 keyword2 ...')
 async def notify(ctx, channel: discord.TextChannel, *keywords):
     user_id = ctx.message.author.id
     if user_id not in user_preferences:
         user_preferences[user_id] = {}
     user_preferences[user_id]['channel'] = channel.name
     user_preferences[user_id]['keywords'] = list(keywords)
+    save_preferences()
     await ctx.send(f'You will be notified for keywords: {", ".join(keywords)} in {channel.mention}')
 
-@bot.command(name='show', help='Show your current keyword subscriptions. Usage: !show')
+@bot.command(name='adsbx-show', help='Show your current keyword subscriptions. Usage: !adsbx-show')
 async def show(ctx):
     user_id = ctx.message.author.id
     if user_id in user_preferences:
@@ -41,25 +57,26 @@ async def show(ctx):
     else:
         await ctx.send('You have no keyword subscriptions.')
 
-@bot.command(name='remove', help='Remove keywords from your subscription. Usage: !remove keyword1 keyword2 ...')
+@bot.command(name='adsbx-remove', help='Remove keywords from your subscription. Usage: !adsbx-remove keyword1 keyword2 ...')
 async def remove(ctx, *keywords):
     user_id = ctx.message.author.id
     if user_id in user_preferences:
         for keyword in keywords:
             if keyword in user_preferences[user_id]['keywords']:
                 user_preferences[user_id]['keywords'].remove(keyword)
+        save_preferences()
         await ctx.send(f'Keywords {", ".join(keywords)} have been removed from your subscription.')
     else:
         await ctx.send('You have no keyword subscriptions.')
 
-@bot.command(name='help', help='Show a list of available commands and how to use them.')
+@bot.command(name='adsbx-help', help='Show a list of available commands and how to use them.')
 async def help_command(ctx):
     help_text = (
         "**Available Commands:**\n"
-        "- **!notify #channel-name keyword1 keyword2 ...** - Set the channel and keywords to monitor.\n"
-        "- **!show** - Show your current keyword subscriptions.\n"
-        "- **!remove keyword1 keyword2 ...** - Remove keywords from your subscription.\n"
-        "- **!help** - Show this help message."
+        "- **!adsbx-notify #channel-name keyword1 keyword2 ...** - Set the channel and keywords to monitor.\n"
+        "- **!adsbx-show** - Show your current keyword subscriptions.\n"
+        "- **!adsbx-remove keyword1 keyword2 ...** - Remove keywords from your subscription.\n"
+        "- **!adsbx-help** - Show this help message."
     )
     await ctx.send(help_text)
 
