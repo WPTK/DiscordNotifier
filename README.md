@@ -10,6 +10,19 @@ This guide will walk you through setting up Python, creating and customizing you
 1. **Download Python**:
    - Visit the [Python website](https://www.python.org/downloads/) and download the latest version of Python.
    - Make sure to check the option to add Python to your PATH during installation.
+   - Don't know how to add to PATH? Follow these steps:
+      1. Right-click My Computer (either on the Desktop or the Start menu). Click Properties.
+      2. In the System Properties dialog box, click the Advanced tab.
+      3. Click Environment Variables.
+      4. In the top list, scroll down to the PATH variable, select it, and click Edit. 
+          - Note: If the PATH variable does not exist, click New and enter PATH for the Variable Name.
+      5. In the Variable Value box, scroll to the end of the variable. 
+          - If there is no semi-colon (;) at the end of the current path, add one, and then enter the path to the MicroStation folder.
+      6. Click OK to close each dialog box.
+
+
+
+
 
 2. **Verify Installation**:
    - Open a command prompt or terminal.
@@ -24,6 +37,7 @@ This guide will walk you through setting up Python, creating and customizing you
      ```bash
      pip install discord.py
      ```
+     Note: You may need to use `pip3` instead of `pip`, depending on your version of Python. 
 
 ## Step 2: Creating a Discord Bot Account
 
@@ -59,3 +73,13 @@ This guide will walk you through setting up Python, creating and customizing you
    - Copy the generated URL.
    - Paste the URL into your browser and select the server where you want to add the bot.
    - Authorize the bot to join your server.
+
+## Step 4: Customizing the Bot Script
+
+1. **Download the bot.py file in this repo**
+2. **Fire up your favorite code/text editor. I prefer Notepad++**
+3. **Customize the Bot Token**:
+   - Replace `'YOUR_BOT_TOKEN_HERE'` with the bot token you copied from the Discord Developer Portal.
+
+4. **Customize Command Prefix and Names (Optional)**:
+   - If you prefer different command names or a different prefix, update the `command_prefix` and the command names in the script. For example, change the `command_prefix` from `'!'` to `'/custom-'` or any other prefix you prefer.
