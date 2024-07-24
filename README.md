@@ -20,10 +20,6 @@ This guide will walk you through setting up Python, creating and customizing you
           - If there is no semi-colon (;) at the end of the current path, add one, and then enter the path to the MicroStation folder.
       6. Click OK to close each dialog box.
 
-
-
-
-
 2. **Verify Installation**:
    - Open a command prompt or terminal.
    - Type the following command to verify that Python is installed correctly:
@@ -59,6 +55,19 @@ This guide will walk you through setting up Python, creating and customizing you
    - Under "Privileged Gateway Intents", enable "MESSAGE CONTENT INTENT".
 
 ## Step 3: Inviting Your Bot to Your Server
+**Important Note before inviting the bot to your server:**
+In the same folder as `bot.py`, create a file named user_preferences.json (if you didn't clone the repo). This will ensure user settings are retained. No personal data is stored, here's an example of the output when a user wants to be notified: 
+
+`{
+    "DISCORDIDSTRING": {
+        "channel": "close-calls",
+        "keywords": [
+            "Airport"
+        ]
+    }
+}`
+
+There's a blank user_preferences.json file in this repo. 
 
 1. **Generate an OAuth2 URL**:
    - Go to the "OAuth2" section.
