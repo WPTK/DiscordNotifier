@@ -55,7 +55,9 @@ This guide will walk you through setting up Python, creating and customizing you
    - Under "Privileged Gateway Intents", enable "MESSAGE CONTENT INTENT".
 
 ## Step 3: Inviting Your Bot to Your Server
+
 **Important Note before inviting the bot to your server:**
+
 In the same folder as `bot.py`, create a file named user_preferences.json (if you didn't clone the repo). This will ensure user settings are retained. No personal data is stored, here's an example of the output when a user wants to be notified: 
 
 {
