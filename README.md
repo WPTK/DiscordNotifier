@@ -83,3 +83,9 @@ This guide will walk you through setting up Python, creating and customizing you
 
 4. **Customize Command Prefix and Names (Optional)**:
    - If you prefer different command names or a different prefix, update the `command_prefix` and the command names in the script. For example, change the `command_prefix` from `'!'` to `'/custom-'` or any other prefix you prefer.
+  
+## Troubleshooting
+
+- **Bot Not Responding**: Ensure the bot is running in the command prompt or terminal.
+- **Permissions Issues**: Verify that the bot has the necessary permissions in the server.
+- **Message Content Not Detected**: Ensure the "MESSAGE CONTENT INTENT" is enabled in the Discord Developer Portal.
