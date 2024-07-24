@@ -60,12 +60,18 @@ In the same folder as `bot.py`, create a file named user_preferences.json (if yo
 
 `{
     "DISCORDIDSTRING": {
+    
         "channel": "close-calls",
+        
         "keywords": [
+        
             "Airport"
+            
         ]
+        
     }
-}`
+    
+} ` 
 
 There's a blank user_preferences.json file in this repo. 
 
