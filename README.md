@@ -60,15 +60,7 @@ This guide will walk you through setting up Python, creating and customizing you
 
 In the same folder as `bot.py`, create a file named user_preferences.json (if you didn't clone the repo). This will ensure user settings are retained. No personal data is stored, here's an example of the output when a user wants to be notified: 
 
-{
-    "RANDOMDISCORDID": {
-        "channel": "close-calls",
-        "keywords": [
-            "airport"
-        ]
-    }
-}
-
+[DiscordNotifier/image.png]
 
 There's a blank user_preferences.json file in this repo. 
 
