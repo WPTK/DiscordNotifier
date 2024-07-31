@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import json
 import os
+import re  # Import the regex module
 
 # Your bot token
 TOKEN = 'YOUR_BOT_TOKEN_HERE'
@@ -36,7 +37,7 @@ async def on_ready():
     activity = discord.Game(name="!adsbx-help for commands")
     await bot.change_presence(status=discord.Status.online, activity=activity)
 
-@bot.command(name='adsbx-notify', help='Set the channel and keywords to monitor. Usage: !adsbx-notify #channel-name keyword1 keyword2 ...')
+@bot.command(name='adsbx-notify', help='Set the channel and keywords (regex supported) to monitor. Usage: !adsbx-notify #channel-name keyword1 keyword2 ...')
 async def notify(ctx, channel: discord.TextChannel, *keywords):
     user_id = ctx.message.author.id
     if user_id not in user_preferences:
@@ -73,12 +74,23 @@ async def remove(ctx, *keywords):
 async def help_command(ctx):
     help_text = (
         "**Available Commands:**\n"
-        "- **!adsbx-notify #channel-name keyword1 keyword2 ...** - Set the channel and keywords to monitor.\n"
+        "- **!adsbx-notify #channel-name keyword1 keyword2 ...** - Set the channel and keywords to monitor (regex supported).\n"
         "- **!adsbx-show** - Show your current keyword subscriptions.\n"
         "- **!adsbx-remove keyword1 keyword2 ...** - Remove keywords from your subscription.\n"
         "- **!adsbx-help** - Show this help message."
     )
     await ctx.author.send(help_text)
+
+@bot.command(name='adsbx-summary', help='Show a summary of all user subscriptions (admin only).')
+@commands.has_permissions(administrator=True)
+async def summary(ctx):
+    summary_text = "**User Subscriptions Summary:**\n"
+    for user_id, preferences in user_preferences.items():
+        user = await bot.fetch_user(user_id)
+        channel = preferences.get('channel')
+        keywords = preferences.get('keywords', [])
+        summary_text += f'- **User:** {user.name}#{user.discriminator} **Channel:** #{channel} **Keywords:** {", ".join(keywords)}\n'
+    await ctx.author.send(summary_text)
 
 @bot.event
 async def on_message(message):
@@ -88,7 +100,7 @@ async def on_message(message):
     for user_id, preferences in user_preferences.items():
         if 'channel' in preferences and message.channel.name == preferences['channel']:
             for keyword in preferences.get('keywords', []):
-                if keyword.lower() in message.content.lower():
+                if re.search(keyword, message.content, re.IGNORECASE):  # Use regex to match keywords
                     await notify_user(message, keyword, user_id)
                     break
 
