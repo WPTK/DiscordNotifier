@@ -44,7 +44,7 @@ async def notify(ctx, channel: discord.TextChannel, *keywords):
     user_preferences[user_id]['channel'] = channel.name
     user_preferences[user_id]['keywords'] = list(keywords)
     save_preferences()
-    await ctx.send(f'You will be notified for keywords: {", ".join(keywords)} in {channel.mention}')
+    await ctx.author.send(f'You will be notified for keywords: {", ".join(keywords)} in {channel.mention}')
 
 @bot.command(name='adsbx-show', help='Show your current keyword subscriptions. Usage: !adsbx-show')
 async def show(ctx):
@@ -53,9 +53,9 @@ async def show(ctx):
         preferences = user_preferences[user_id]
         channel = preferences.get('channel')
         keywords = preferences.get('keywords', [])
-        await ctx.send(f'You are subscribed to keywords: {", ".join(keywords)} in #{channel}')
+        await ctx.author.send(f'You are subscribed to keywords: {", ".join(keywords)} in #{channel}')
     else:
-        await ctx.send('You have no keyword subscriptions.')
+        await ctx.author.send('You have no keyword subscriptions.')
 
 @bot.command(name='adsbx-remove', help='Remove keywords from your subscription. Usage: !adsbx-remove keyword1 keyword2 ...')
 async def remove(ctx, *keywords):
@@ -65,9 +65,9 @@ async def remove(ctx, *keywords):
             if keyword in user_preferences[user_id]['keywords']:
                 user_preferences[user_id]['keywords'].remove(keyword)
         save_preferences()
-        await ctx.send(f'Keywords {", ".join(keywords)} have been removed from your subscription.')
+        await ctx.author.send(f'Keywords {", ".join(keywords)} have been removed from your subscription.')
     else:
-        await ctx.send('You have no keyword subscriptions.')
+        await ctx.author.send('You have no keyword subscriptions.')
 
 @bot.command(name='adsbx-help', help='Show a list of available commands and how to use them.')
 async def help_command(ctx):
@@ -78,7 +78,7 @@ async def help_command(ctx):
         "- **!adsbx-remove keyword1 keyword2 ...** - Remove keywords from your subscription.\n"
         "- **!adsbx-help** - Show this help message."
     )
-    await ctx.send(help_text)
+    await ctx.author.send(help_text)
 
 @bot.event
 async def on_message(message):
